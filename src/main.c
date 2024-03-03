@@ -9,8 +9,8 @@
 #include "audio.h"
 #include "beat.h"
 
-#define METRONOME_HIGH_PATH "/home/kluzey/Code/kmetronome/assets/Perc_Stick_hi.wav"
-#define METRONOME_LOW_PATH  "/home/kluzey/Code/kmetronome/assets/Perc_Stick_lo.wav"
+#define METRONOME_HIGH_PATH ""
+#define METRONOME_LOW_PATH  ""
 
 static int run;
 
