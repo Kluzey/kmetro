@@ -33,16 +33,10 @@ void loadSourceFile(char *filePath, ALuint *source)
     alSourcei(*source, AL_BUFFER, buffer);
 }
 
-void playWavFile(const char *filePath, ALuint source)
+void playWavFile(ALuint source)
 {
-    if(access(filePath, F_OK) != 0)
-        die("Specified audio file does not exist");
-
-    ALCenum error;
-
-    alSourcePlay(source);
-
-    error = alGetError();
+    alSourcePlay(source);  
+    ALCenum error = alGetError();
     if(error != AL_NO_ERROR)
         die("OpenAL error occured");
 }

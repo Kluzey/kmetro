@@ -1,16 +1,20 @@
 #include <AL/alc.h>
 #include <AL/alut.h>
+#include <pthread.h>
 #include <signal.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <poll.h>
 
 #include "util.h"
 #include "audio.h"
 #include "beat.h"
+#include "timer.h"
 
-#define METRONOME_HIGH_PATH ""
-#define METRONOME_LOW_PATH  ""
+#define METRONOME_HIGH_PATH "/home/kluzey/Documents/Code/Github/kmetro/assets/Perc_Stick_hi.wav"
+#define METRONOME_LOW_PATH  "/home/kluzey/Documents/Code/Github/kmetro/assets/Perc_Stick_lo.wav"
 
 static int run;
 
@@ -49,20 +53,28 @@ int main(int argc, char *argv[])
 
     printf(CURSOR_OFF "bpm: %i \t %.0f/%.0f\n", config.bpm, config.timeSig.numerator, config.timeSig.denominator);
 
-    float fakebpm;
-    fakebpm = config.timeSig.denominator / 4 * config.bpm;
+    long long interval = convertBpmToNanoSeconds(config.timeSig.denominator / 4 * config.bpm); 
 
-    int delay = convertBpmToMicroSeconds(fakebpm); 
+    pthread_t timer_thread;
+    timerData td;
+    td.interval = interval;
+    pthread_create(&timer_thread, NULL, timer, &td);
 
     run = 1;
+    atomic_store(&td.ready, false);
     while(run) {
-        if(printBeats(config.timeSig) == 2)
-            playWavFile(METRONOME_HIGH_PATH, metroHigh);
-        else
-            playWavFile(METRONOME_LOW_PATH, metroLow);
-        usleep(delay);
+        if(atomic_load(&td.ready)) {
+            if(printBeats(config.timeSig) == 2)
+                playWavFile(metroHigh);
+            else
+                playWavFile(metroLow);
+            atomic_store(&td.ready, false);
+            fflush(stdout);
+        }
     }
 
+    pthread_cancel(timer_thread);
+    pthread_join(timer_thread, NULL);
     cleanup();
     return EXIT_SUCCESS;
 }

@@ -6,4 +6,4 @@ extern ALCcontext *context;
 
 void initAudio(void);
 void loadSourceFile(char* filePath, ALuint *source);
-void playWavFile(const char *filePath, ALuint source);
+void playWavFile(ALuint source);

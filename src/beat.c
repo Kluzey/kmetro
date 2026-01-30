@@ -4,9 +4,9 @@
 
 #include "util.h"
 
-int convertBpmToMicroSeconds(int bpm)
+long long convertBpmToNanoSeconds(long long bpm)
 {
-    return 60000000/bpm;
+    return 60000000000LL/bpm;
 }
 
 int getTermRows(void)

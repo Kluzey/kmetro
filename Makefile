@@ -4,13 +4,13 @@ BUILD_DIR = ./build
 SRC_DIR = ./src
 INSTALL_PATH = /usr/local/bin
 
-SRC = $(SRC_DIR)/main.c $(SRC_DIR)/audio.c $(SRC_DIR)/beat.c $(SRC_DIR)/util.c
+SRC = $(SRC_DIR)/main.c $(SRC_DIR)/audio.c $(SRC_DIR)/beat.c $(SRC_DIR)/util.c $(SRC_DIR)/timer.c
 OBJ = $(subst $(SRC_DIR),$(BUILD_DIR),$(SRC:.c=.o))
 BIN = kmetro
 
 CC = gcc
 CFLAGS = -Wall -Wextra -pedantic
-LDFLAGS = -lopenal -lalut
+LDFLAGS = -lopenal -lalut -lpthread
 
 all: $(BIN) options
 
