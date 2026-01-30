@@ -13,8 +13,8 @@
 #include "beat.h"
 #include "timer.h"
 
-#define METRONOME_HIGH_PATH "/home/kluzey/Documents/Code/Github/kmetro/assets/Perc_Stick_hi.wav"
-#define METRONOME_LOW_PATH  "/home/kluzey/Documents/Code/Github/kmetro/assets/Perc_Stick_lo.wav"
+#define METRONOME_HIGH_PATH ""
+#define METRONOME_LOW_PATH  ""
 
 static int run;
 
